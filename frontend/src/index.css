@@ -1,0 +1,327 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #111;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* ─────────────────────────────────────────
+   RESPONSIVE APP SHELL
+   Mobile  : full width, max 430px, centered
+   Tablet  : 480px wide, centered with shadow
+   Desktop : 430px wide, centered, with desktop sidebar concept
+───────────────────────────────────────── */
+.app-shell {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100vh;
+  background: #000;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  #root {
+    background: #0a0a0a;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0;
+  }
+  .app-shell {
+    max-width: 430px;
+    min-height: 100vh;
+    box-shadow: 0 0 60px rgba(0,0,0,0.8);
+  }
+}
+
+@media (min-width: 1024px) {
+  #root {
+    background: #050505;
+    justify-content: center;
+    padding: 0;
+  }
+  .app-shell {
+    max-width: 430px;
+    min-height: 100vh;
+    box-shadow: 0 0 80px rgba(0,0,0,0.9), 0 0 0 1px #222;
+  }
+}
+
+/* ── Scrollable page area ── */
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 72px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.page-content::-webkit-scrollbar { display: none; }
+
+/* ── Bottom nav ── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 430px;
+  background: #000;
+  border-top: 1px solid #222;
+  z-index: 100;
+  display: flex;
+  height: 64px;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.bottom-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: #666;
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 8px 2px 6px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.bottom-nav-item.active { color: #026CDF; }
+.bottom-nav-item svg { width: 22px; height: 22px; }
+
+/* ── Event ticket card ── */
+.event-ticket-card {
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 0 12px 16px;
+  cursor: pointer;
+}
+
+/* ── Form page background ── */
+.form-page { background: #eef1f8; min-height: 100vh; }
+
+/* ── Form inputs ── */
+.form-input-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 13px 14px;
+  font-size: 15px;
+  color: #111;
+  border: none;
+  outline: none;
+  width: 100%;
+  transition: box-shadow 0.15s;
+  display: block;
+}
+.form-input-card:focus {
+  box-shadow: 0 0 0 2px rgba(2,108,223,0.3);
+}
+.form-input-card::placeholder { color: #bbb; }
+
+/* ── Ticket row card ── */
+.ticket-row-card {
+  background: #ebebeb;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+/* ── Transfer/Sell bar ── */
+.transfer-sell-bar {
+  position: fixed;
+  bottom: 68px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 398px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+  display: flex;
+  z-index: 80;
+  overflow: hidden;
+}
+
+.transfer-sell-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 8px;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-right: 1px solid #eee;
+}
+.transfer-sell-btn:last-child { border-right: none; }
+.transfer-sell-btn.active { color: #026CDF; }
+.transfer-sell-btn.disabled { color: #bbb; cursor: not-allowed; }
+
+/* ── Modal ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.modal-sheet {
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  width: 100%;
+  max-width: 430px;
+  padding: 8px 0 40px;
+  animation: slideUp 0.22s ease;
+  max-height: 92vh;
+  overflow-y: auto;
+}
+.modal-handle {
+  width: 36px;
+  height: 4px;
+  background: #ddd;
+  border-radius: 2px;
+  margin: 0 auto 20px;
+}
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* ── Discover header ── */
+.discover-header {
+  background: #000;
+  padding: 14px 14px 12px;
+}
+
+/* ── Scrollbar hide ── */
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ─────────────────────────────────────────
+   LOGIN PAGE — responsive
+───────────────────────────────────────── */
+.login-shell {
+  width: 100%;
+  min-height: 100vh;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 20px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  background: #111;
+  border-radius: 16px;
+  padding: 36px 28px 32px;
+  border: 1px solid #222;
+}
+
+@media (min-width: 768px) {
+  .login-shell {
+    background: #050505;
+  }
+  .login-card {
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  }
+}
+
+.login-input {
+  width: 100%;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 13px 14px;
+  font-size: 15px;
+  color: #fff;
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+.login-input:focus { border-color: #026CDF; }
+.login-input::placeholder { color: #555; }
+
+.login-btn {
+  width: 100%;
+  background: #026CDF;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+  letter-spacing: 0.2px;
+}
+.login-btn:hover { background: #0156B3; }
+.login-btn:active { background: #0146A0; }
+.login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ── Ticket detail responsive font sizing ── */
+.ticket-seat-value {
+  font-size: clamp(18px, 4vw, 22px);
+  font-weight: 900;
+  color: #111;
+  line-height: 1;
+}
+
+/* ── Quantity selector chips ── */
+.qty-chip {
+  flex: 1;
+  padding: 10px 8px;
+  border-radius: 8px;
+  border: 1.5px solid #e0e0e0;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  color: #444;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+}
+.qty-chip.selected {
+  border-color: #026CDF;
+  background: #EBF4FF;
+  color: #026CDF;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
