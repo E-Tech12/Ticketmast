@@ -38,7 +38,8 @@ export const Discover: React.FC = () => {
     if (!q.trim()) { setResults([]); setSearched(false); return; }
     setLoading(true);
     try {
-      const r = await axios.get('/api/events/search', { params: { q, size: 20 } });
+      const API_URL = import.meta.env.VITE_API_URL;
+      const r = await axios.get(`${API_URL}/api/events/search`, {params: { q, size: 20 }});
       setResults(r.data.events || []);
       setSearched(true);
     } catch {
