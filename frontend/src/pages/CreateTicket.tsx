@@ -321,8 +321,11 @@ export const CreateTicket: React.FC = () => {
         )}
 
         {/* Create button */}
-        <div style={{ paddingBottom: 32 }}>
-          <button className="btn-create" onClick={handleSubmit}>
+        <div className="flex justify-center mt-6">
+          <button
+            onClick={handleSubmit}
+            className="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:from-blue-700 hover:to-blue-600 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+          >
             Create Ticket
           </button>
         </div>

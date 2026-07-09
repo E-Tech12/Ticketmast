@@ -10,7 +10,7 @@ db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
-    CORS(app, origins=["http://localhost:5173", "http://localhost:4173","https://ticketmast-nbil.vercel.app/"])
+    CORS(app, origins=["http://localhost:5173", "http://localhost:4173","https://ticketmast-snowy.vercel.app/"])
 
     # DB config
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(

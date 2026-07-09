@@ -20,23 +20,44 @@ def get_best_image(images):
             return best.get('url', '')
     return images[0].get('url', '')
 
-
 @events_bp.route('/events/search')
 def search_events():
     q = request.args.get('q', '')
     size = request.args.get('size', 20)
 
+    city = request.args.get('city', '')
+    start_date = request.args.get('startDateTime', '')
+    end_date = request.args.get('endDateTime', '')
+
     if not TM_API_KEY:
         return jsonify({'error': 'TM_API_KEY not configured', 'events': []}), 200
 
     try:
-        resp = requests.get(f'{TM_BASE}/events.json', params={
+        params = {
             'apikey': TM_API_KEY,
             'keyword': q,
             'size': size,
             'sort': 'relevance,desc',
             'locale': '*',
-        }, timeout=10)
+        }
+
+        # Add filters only when provided
+        if city:
+            params['city'] = city
+
+        if start_date:
+            params['startDateTime'] = start_date
+
+        if end_date:
+            params['endDateTime'] = end_date
+
+
+        resp = requests.get(
+            f'{TM_BASE}/events.json',
+            params=params,
+            timeout=10
+        )
+
         resp.raise_for_status()
         data = resp.json()
 
@@ -49,24 +70,23 @@ def search_events():
 
             venues = ev.get('_embedded', {}).get('venues', [])
             venue = venues[0] if venues else {}
+
             venue_name = venue.get('name', '')
-            city = venue.get('city', {}).get('name', '')
+            city_name = venue.get('city', {}).get('name', '')
             state = venue.get('state', {}).get('stateCode', '')
 
             dates = ev.get('dates', {})
             start = dates.get('start', {})
-            date_str = start.get('localDate', '')
-            time_str = start.get('localTime', '')
 
             events.append({
                 'id': ev.get('id', ''),
                 'name': ev.get('name', ''),
                 'image': image_url,
                 'venue': venue_name,
-                'city': city,
+                'city': city_name,
                 'state': state,
-                'date': date_str,
-                'time': time_str,
+                'date': start.get('localDate', ''),
+                'time': start.get('localTime', ''),
                 'url': ev.get('url', ''),
             })
 
