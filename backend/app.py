@@ -9,9 +9,20 @@ load_dotenv()
 db = SQLAlchemy()
 
 def create_app():
+    
     app = Flask(__name__)
-    CORS(app, origins=["http://localhost:5173", "http://localhost:4173"," https://ticketmast-murex.vercel.app"])
 
+    CORS(
+        app,
+        resources={
+            r"/api/*": {
+                "origins": [
+                    "https://ticketmast-murex.vercel.app",
+                    "http://localhost:5173"
+                ]
+            }
+        }
+    )
     # DB config
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
         'DATABASE_URL',
